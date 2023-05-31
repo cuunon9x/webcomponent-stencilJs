@@ -38,13 +38,12 @@
       </ul>
     </nav>
   </uc-side-drawer>
-  <!-- <my-component first1="ddd" last="sss"></my-component> -->
   <script>
     const sideDrawerBtn = document.querySelector("#side-drawer-btn");
     const sideDrawer = document.querySelector('uc-side-drawer');
     sideDrawerBtn.addEventListener('click', () => {
       if (!sideDrawer.open) {
-        sideDrawer.open = true;
+        sideDrawer.openMainMenu();
       }
     });
     // setTimeout(() => {

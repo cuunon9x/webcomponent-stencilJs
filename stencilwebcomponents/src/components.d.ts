@@ -8,7 +8,10 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface UcSideDrawer {
         "first": string;
+        "onContentChange": (content: string) => Promise<void>;
+        "oncloseDrawer": () => Promise<void>;
         "open": boolean;
+        "openMainMenu": () => Promise<void>;
     }
 }
 declare global {
