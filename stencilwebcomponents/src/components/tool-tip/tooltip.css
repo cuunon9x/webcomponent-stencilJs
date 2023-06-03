@@ -1,0 +1,30 @@
+:host {
+  position: relative;
+}
+#tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+}
+#tooltip-icon {
+  background: black;
+  position: relative;
+  color: white;
+  padding: 0.15rem 0.45rem;
+  border-radius: 50%;
+  margin-left: 0.5rem;
+}
+
+#tooltip-icon:hover #tooltip-text {
+  visibility: visible;
+}
