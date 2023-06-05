@@ -10,7 +10,7 @@
       font-family: sans-serif;
     }
 
-    .side-nav ul {
+    /* .side-nav ul {
       list-style: none;
     }
 
@@ -21,14 +21,15 @@
     .side-nav a {
       text-decoration: none;
       color: black;
-    }
+    } */
   </style>
   <script type="module" src="/build/stencilwebcomponents.esm.js"></script>
   <script nomodule src="/build/stencilwebcomponents.js"></script>
 </head>
 
 <body>
-  <button id="side-drawer-btn">Open Side Menu</button>
+  <uc-stock-price></uc-stock-price>
+  <!-- <button id="side-drawer-btn">Open Side Menu</button>
   <p>Let's test this new Tooltip<uc-tooltip text="This is a new Tooltip!"></uc-tooltip></p>
   <uc-side-drawer first="Main Menu">
     <nav class="side-nav">
@@ -46,10 +47,7 @@
       if (!sideDrawer.open) {
         sideDrawer.openMainMenu();
       }
-    });
-    // setTimeout(() => {
-    //   sideDrawer.titleMenu = 'It changed!';
-    // }, 3000)
+    }); -->
   </script>
 </body>
 
