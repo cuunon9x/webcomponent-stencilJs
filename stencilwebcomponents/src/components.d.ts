@@ -14,6 +14,7 @@ export namespace Components {
         "openMainMenu": () => Promise<void>;
     }
     interface UcStockPrice {
+        "stockSymbol": string;
     }
     interface UcTooltip {
         "text": string;
@@ -50,6 +51,7 @@ declare namespace LocalJSX {
         "open"?: boolean;
     }
     interface UcStockPrice {
+        "stockSymbol"?: string;
     }
     interface UcTooltip {
         "text"?: string;
