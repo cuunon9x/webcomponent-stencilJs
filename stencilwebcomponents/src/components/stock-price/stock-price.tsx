@@ -7,6 +7,7 @@ import { API_KEY } from "../../global/global";
 })
 export class StockPrice {
   stockInput: HTMLInputElement;
+  // initialStockSymbol: string;
   @Element() el: HTMLElement;
   @State() fetchedPrice: number;
   @State() stockSymbolValue: string;
@@ -38,6 +39,9 @@ export class StockPrice {
     console.log("did load");
 
     if (this.stockSymbol) {
+      // this.initialStockSymbol = this.stockSymbol;
+      this.stockSymbolValue = this.stockSymbol;
+      this.isStockInputValid = true;
       this.fetchStockPrice(this.stockSymbol);
     }
   }
@@ -46,14 +50,16 @@ export class StockPrice {
   }
   componentDidUpdate() {
     console.log("did update");
+    // this.fetchStockPrice(this.stockInput.value);
   }
   disconnectedCallback() {
     console.log("disconnectedCallback");
   }
+
   fetchStockPrice(stockSymbol: string) {
     fetch(
-      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo`
-      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${API_KEY}`
+      // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo`
+      `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${API_KEY}`
     )
       .then((result) => {
         if (!result.ok) {

@@ -13,6 +13,8 @@ export namespace Components {
         "open": boolean;
         "openMainMenu": () => Promise<void>;
     }
+    interface UcStockFinder {
+    }
     interface UcStockPrice {
         "stockSymbol": string;
     }
@@ -20,12 +22,22 @@ export namespace Components {
         "text": string;
     }
 }
+export interface UcStockFinderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUcStockFinderElement;
+}
 declare global {
     interface HTMLUcSideDrawerElement extends Components.UcSideDrawer, HTMLStencilElement {
     }
     var HTMLUcSideDrawerElement: {
         prototype: HTMLUcSideDrawerElement;
         new (): HTMLUcSideDrawerElement;
+    };
+    interface HTMLUcStockFinderElement extends Components.UcStockFinder, HTMLStencilElement {
+    }
+    var HTMLUcStockFinderElement: {
+        prototype: HTMLUcStockFinderElement;
+        new (): HTMLUcStockFinderElement;
     };
     interface HTMLUcStockPriceElement extends Components.UcStockPrice, HTMLStencilElement {
     }
@@ -41,6 +53,7 @@ declare global {
     };
     interface HTMLElementTagNameMap {
         "uc-side-drawer": HTMLUcSideDrawerElement;
+        "uc-stock-finder": HTMLUcStockFinderElement;
         "uc-stock-price": HTMLUcStockPriceElement;
         "uc-tooltip": HTMLUcTooltipElement;
     }
@@ -50,6 +63,9 @@ declare namespace LocalJSX {
         "first"?: string;
         "open"?: boolean;
     }
+    interface UcStockFinder {
+        "onUcSymbolSelect"?: (event: UcStockFinderCustomEvent<string>) => void;
+    }
     interface UcStockPrice {
         "stockSymbol"?: string;
     }
@@ -58,6 +74,7 @@ declare namespace LocalJSX {
     }
     interface IntrinsicElements {
         "uc-side-drawer": UcSideDrawer;
+        "uc-stock-finder": UcStockFinder;
         "uc-stock-price": UcStockPrice;
         "uc-tooltip": UcTooltip;
     }
@@ -67,6 +84,7 @@ declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
             "uc-side-drawer": LocalJSX.UcSideDrawer & JSXBase.HTMLAttributes<HTMLUcSideDrawerElement>;
+            "uc-stock-finder": LocalJSX.UcStockFinder & JSXBase.HTMLAttributes<HTMLUcStockFinderElement>;
             "uc-stock-price": LocalJSX.UcStockPrice & JSXBase.HTMLAttributes<HTMLUcStockPriceElement>;
             "uc-tooltip": LocalJSX.UcTooltip & JSXBase.HTMLAttributes<HTMLUcTooltipElement>;
         }
