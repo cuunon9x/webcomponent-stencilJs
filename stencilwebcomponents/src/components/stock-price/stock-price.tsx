@@ -1,4 +1,12 @@
-import { Component, State, Element, h, Prop } from "@stencil/core";
+import {
+  Component,
+  State,
+  Element,
+  h,
+  Prop,
+  Listen,
+  Watch,
+} from "@stencil/core";
 import { API_KEY } from "../../global/global";
 @Component({
   tag: "uc-stock-price",
@@ -15,7 +23,14 @@ export class StockPrice {
   @State() error: string;
 
   @Prop() stockSymbol: string;
-
+  @Watch("stockSymbol")
+  stockSymbolChanged(newValue: string, oldValue: string) {
+    if (newValue !== oldValue) {
+      this.stockSymbolValue = newValue;
+      this.isStockInputValid = true;
+      // this.fetchStockPrice(newValue);
+    }
+  }
   onStockValueChange(event: Event) {
     this.stockSymbolValue = (event.target as HTMLInputElement).value;
     if (this.stockSymbolValue.trim() !== "") {
@@ -55,7 +70,14 @@ export class StockPrice {
   disconnectedCallback() {
     console.log("disconnectedCallback");
   }
-
+  @Listen("ucSymbolSelected", { target: "body" })
+  onStockSymbolSelected(event: CustomEvent) {
+    console.log("Stock symbol selected" + event.detail);
+    if (event?.detail !== this.stockSymbol) {
+      this.stockSymbol = event.detail;
+      this.fetchStockPrice(event.detail);
+    }
+  }
   fetchStockPrice(stockSymbol: string) {
     fetch(
       // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo`

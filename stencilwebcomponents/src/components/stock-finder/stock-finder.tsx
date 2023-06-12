@@ -10,7 +10,7 @@ export class StockFinder {
   stockNameInput: HTMLInputElement;
   @State() searchResults: { name: string; symbol: string }[] = [];
   @Event({ bubbles: true, composed: true })
-  ucSymbolSelect: EventEmitter<string>;
+  ucSymbolSelected: EventEmitter<string>;
 
   onFindStock(event: Event) {
     event.preventDefault();
@@ -18,8 +18,9 @@ export class StockFinder {
     this.onFetch(stockName);
   }
   onSelectSymbol(symbol: string) {
-    this.ucSymbolSelect.emit(symbol);
+    this.ucSymbolSelected.emit(symbol);
   }
+  // @Listen('ucSymbolSelected', { target: 'body' })
   onFetch(stockSymbol: string) {
     fetch(
       //   "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tencent&apikey=demo"
