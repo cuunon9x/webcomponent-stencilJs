@@ -21,7 +21,7 @@ export class StockPrice {
   @State() stockSymbolValue: string;
   @State() isStockInputValid = false;
   @State() error: string;
-
+  @State() loading = false;
   @Prop() stockSymbol: string;
   @Watch("stockSymbol")
   stockSymbolChanged(newValue: string, oldValue: string) {
@@ -79,6 +79,7 @@ export class StockPrice {
     }
   }
   fetchStockPrice(stockSymbol: string) {
+    this.loading = true;
     fetch(
       // `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=MSFT&apikey=demo`
       `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=${API_KEY}`
@@ -96,28 +97,43 @@ export class StockPrice {
         }
         this.error = "";
         this.fetchedPrice = +parsedRes["Global Quote"]["05. price"];
+        this.loading = false;
       })
       .catch((err) => {
         this.error = err.message;
+        this.loading = false;
       });
   }
+  hostData() {
+    return { class: this.error ? "error" : "" };
+  }
   render() {
+    let dataContent = <p>Please enter a symbol!</p>;
+    if (this.error) {
+      dataContent = <p>{this.error}</p>;
+    }
+    if (this.fetchedPrice) {
+      dataContent = <p>Price: ${this.fetchedPrice}</p>;
+    }
+    if (this.loading) {
+      dataContent = <uc-spinner-loading></uc-spinner-loading>;
+    }
     return [
-      <form onSubmit={this.onFetchStockPrice.bind(this)}>
+      <form onSubmit={(e) => this.onFetchStockPrice(e)}>
         <input
           id="stock-symbol"
           ref={(el) => (this.stockInput = el)}
           value={this.stockSymbolValue}
           onInput={this.onStockValueChange.bind(this)}
         ></input>
-        <button type="submit" disabled={!this.isStockInputValid}>
+        <button
+          type="submit"
+          disabled={!this.isStockInputValid || this.loading}
+        >
           Fetch
         </button>
       </form>,
-      <div>
-        <p>Price: ${this.fetchedPrice}</p>
-      </div>,
-      this.error && <p>{this.error}</p>,
+      <div>{dataContent}</div>,
     ];
   }
 }

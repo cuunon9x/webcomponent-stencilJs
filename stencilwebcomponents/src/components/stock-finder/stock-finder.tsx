@@ -9,6 +9,7 @@ import { API_KEY } from "../../global/global";
 export class StockFinder {
   stockNameInput: HTMLInputElement;
   @State() searchResults: { name: string; symbol: string }[] = [];
+  @State() loading: boolean = false;
   @Event({ bubbles: true, composed: true })
   ucSymbolSelected: EventEmitter<string>;
 
@@ -22,6 +23,8 @@ export class StockFinder {
   }
   // @Listen('ucSymbolSelected', { target: 'body' })
   onFetch(stockSymbol: string) {
+    // event.preventDefault();
+    this.loading = true;
     fetch(
       //   "https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tencent&apikey=demo"
       `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${stockSymbol}&apikey=${API_KEY}`
@@ -33,13 +36,27 @@ export class StockFinder {
         this.searchResults = parsedResponse["bestMatches"].map((matches) => {
           return { name: matches["2. name"], symbol: matches["1. symbol"] };
         });
+        this.loading = false;
       })
       .catch((err) => {
         // this.error = err.message;
         console.log(err);
+        this.loading = false;
       });
   }
   render() {
+    let content = (
+      <ul>
+        {this.searchResults.map((result) => (
+          <li onClick={this.onSelectSymbol.bind(this, result.symbol)}>
+            <strong>{result.symbol}</strong> = {result.name}
+          </li>
+        ))}
+      </ul>
+    );
+    if (this.loading) {
+      content = <uc-spinner-loading></uc-spinner-loading>;
+    }
     return [
       <form onSubmit={this.onFindStock.bind(this)}>
         <input
@@ -50,13 +67,7 @@ export class StockFinder {
         ></input>
         <button type="submit">Find</button>
       </form>,
-      <ul>
-        {this.searchResults.map((result) => (
-          <li onClick={this.onSelectSymbol.bind(this, result.symbol)}>
-            <strong>{result.symbol}</strong> = {result.name}
-          </li>
-        ))}
-      </ul>,
+      content,
     ];
   }
 }
